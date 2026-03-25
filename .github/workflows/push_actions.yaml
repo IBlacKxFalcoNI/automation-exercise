@@ -6,7 +6,18 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
-      - name: "Install style checker"
-        run: pip install black
+      - run: pip install black
       - name: "Run style checker"
         run: black --check .
+  test:
+    needs: style_check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+      - name: "Install test dependencies"
+        run: pip install pytest coverage
+      - name: "Run tests"
+        run: |
+          pytest 
+          coverage run -m pytest
